@@ -125,10 +125,11 @@ hagman_pic_6=CRED + '''
 -----------------------------
 ''' + RESSTYLE
 hangman_yourlose=CREDBG + '          YOU LOSE!          ' + RESSTYLE
-hangman_yourwin=CGREENBG + '          YOU WIN!!!         ' + RESSTYLE
+hangman_yourwin=CGREENBG + '          YOU WON!!!         ' + RESSTYLE
 hangman_tries=CREDBG2 + '                TRIES LEFT:' + RESSTYLE + ' '
 input_guess_letter=CBLUE + 'GUESS LETTER: ' + RESSTYLE
 input_already_letter=CRED + 'YOU HAVE ALREADY USED THIS LETTER!' + RESSTYLE
+input_already_letter2=CRED + 'YOU HAVE ALREADY USED THIS LETTER OR YOU INPUTED MORE THAN 1 LETTER!' + RESSTYLE
 input_nosuch_letter=CRED + 'THERE IS NO SUCH LETTER IN THE WORD!' + RESSTYLE
 input_non_letter=CRED + 'INPUT ONLY ENGLISH LETTER, PLEASE!' + RESSTYLE
 input_yes_letter=CGREENBG2 + 'YEP!' + RESSTYLE
@@ -226,10 +227,7 @@ def letsgame():
             break
         guess = input(input_guess_letter).upper()
         clear()
-        if (isalpha(guess) == True):
-            for a in range(len(qAlpha)):
-                if (guess == qAlpha[a]):       
-                    qAlpha[a] = '_'
+        if (isalpha(guess) == True):                           
             if (find_letter(guess, lWord) == True):
                 for i in range(len(lWord)):
                     if (guess == qList[i]):
@@ -238,9 +236,11 @@ def letsgame():
                     if (guess == lWord[i]):
                         qList[i] = lWord[i]
                         err_msg=input_yes_letter
-            elif(find_letter(guess, lWord) == False):
+            elif (find_letter(guess, qAlpha) == False):
+                err_msg=input_already_letter2                             
+            elif (find_letter(guess, lWord) == False):
                 gameTries -= 1
-                err_msg=input_nosuch_letter
+                err_msg=input_nosuch_letter                
                 if (gameTries == 0):
                     clear()
                     multicolor_printer(hagman_hello, rainbow_colors)
@@ -250,7 +250,10 @@ def letsgame():
                     print('THE WORD WAS: ' + secretWord)
                     print('')
                     print(hangman_yourlose)
-                    break
+                    break 
+            for a in range(len(qAlpha)):
+                if (guess == qAlpha[a]):       
+                    qAlpha[a] = '_'                                            
         else:
             err_msg=input_non_letter
     print('')
