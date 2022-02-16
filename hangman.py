@@ -84,7 +84,7 @@ hagman_pic_3=CYELLOW + '''
 |                   |       |
 |                   |       |
 -----------------------------
-''' + CYELLOW
+''' + RESSTYLE
 hagman_pic_4=CYELLOW + '''
 -----------------------------
 |                           |
@@ -161,6 +161,7 @@ def letsgame():
     gameTries = 6
     qList = []
     err_msg =''
+    qAlpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 
     # change letters to _
     for letter in lWord:
@@ -175,7 +176,7 @@ def letsgame():
 
     clear()
     while gameWin == False:
-       # print(lWord)
+        #print(lWord)
         multicolor_printer(hagman_hello, rainbow_colors)
         if (gameTries == 0):
             print(hagman_pic_6)
@@ -192,6 +193,8 @@ def letsgame():
         if (gameTries == 1):
             print(hagman_pic_5)  
         print(hangman_tries + str(gameTries))  
+        print('')                               
+        print('USE LETTERS:   ', *qAlpha)        
         print('')                               
         print('WORD:   ', *qList)
         print('')
@@ -224,6 +227,9 @@ def letsgame():
         guess = input(input_guess_letter).upper()
         clear()
         if (isalpha(guess) == True):
+            for a in range(len(qAlpha)):
+                if (guess == qAlpha[a]):       
+                    qAlpha[a] = '_'
             if (find_letter(guess, lWord) == True):
                 for i in range(len(lWord)):
                     if (guess == qList[i]):
@@ -255,7 +261,7 @@ letsgame()
 while True:
     user_input = input("Would you like to play again? (y/n)   ")
     if user_input.lower() == "n":
-        sleep(3)
+        sleep(2)
         clear()
         exit()
     elif user_input.lower() == "y":
