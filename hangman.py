@@ -36,8 +36,8 @@ def multicolor_printer(to_print, clrs):
 hagman_pic_0=CGREEN + '''
 -----------------------------
 |                           |
-|       ------------|       |
-|         |         |       |
+|       ------------|       |   EXIT:     input "exit"
+|         |         |       |   RESTART:  input "restart"
 |         |         |       |
 |                   |       |
 |                   |       |
@@ -49,8 +49,8 @@ hagman_pic_0=CGREEN + '''
 hagman_pic_1=CYELLOW + '''
 -----------------------------
 |                           |
-|       ------------|       |
-|         |         |       |
+|       ------------|       |   EXIT:     input "exit"
+|         |         |       |   RESTART:  input "restart"
 |         |         |       |
 |         O         |       |
 |                   |       |
@@ -62,8 +62,8 @@ hagman_pic_1=CYELLOW + '''
 hagman_pic_2=CYELLOW + '''
 -----------------------------
 |                           |
-|       ------------|       |
-|         |         |       |
+|       ------------|       |   EXIT:     input "exit"
+|         |         |       |   RESTART:  input "restart"
 |         |         |       |
 |         O         |       |
 |         |         |       |
@@ -75,8 +75,8 @@ hagman_pic_2=CYELLOW + '''
 hagman_pic_3=CYELLOW + '''
 -----------------------------
 |                           |
-|       ------------|       |
-|         |         |       |
+|       ------------|       |   EXIT:     input "exit"
+|         |         |       |   RESTART:  input "restart"
 |         |         |       |
 |         O         |       |
 |        /|         |       |
@@ -88,8 +88,8 @@ hagman_pic_3=CYELLOW + '''
 hagman_pic_4=CYELLOW + '''
 -----------------------------
 |                           |
-|       ------------|       |
-|         |         |       |
+|       ------------|       |   EXIT:     input "exit"
+|         |         |       |   RESTART:  input "restart"
 |         |         |       |
 |         O         |       |
 |        /|\        |       |
@@ -101,8 +101,8 @@ hagman_pic_4=CYELLOW + '''
 hagman_pic_5=CYELLOW + '''
 -----------------------------
 |                           |
-|       ------------|       |
-|         |         |       |
+|       ------------|       |   EXIT:     input "exit"
+|         |         |       |   RESTART:  input "restart"
 |         |         |       |
 |         O         |       |
 |        /|\        |       |
@@ -126,7 +126,7 @@ hagman_pic_6=CRED + '''
 ''' + RESSTYLE
 hangman_yourlose=CREDBG + '          YOU LOSE!          ' + RESSTYLE
 hangman_yourwin=CGREENBG + '          YOU WON!!!         ' + RESSTYLE
-hangman_tries=CREDBG2 + '                TRIES LEFT:' + RESSTYLE + ' '
+hangman_tries=CREDBG2 + '           TRIES LEFT:' + RESSTYLE + ' '
 input_guess_letter=CBLUE + 'GUESS LETTER: ' + RESSTYLE
 input_already_letter=CRED + 'YOU HAVE ALREADY USED THIS LETTER!' + RESSTYLE
 input_already_letter2=CRED + 'YOU HAVE ALREADY USED THIS LETTER OR YOU INPUTED MORE THAN 1 LETTER!' + RESSTYLE
@@ -160,6 +160,7 @@ def letsgame():
     # basic variables
     gameWin = False
     gameTries = 6
+    gameTriesAll = 6    
     qList = []
     err_msg =''
     qAlpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
@@ -193,7 +194,7 @@ def letsgame():
             print(hagman_pic_4)
         if (gameTries == 1):
             print(hagman_pic_5)  
-        print(hangman_tries + str(gameTries))  
+        print(hangman_tries + str(gameTries) + ' of ' + str(gameTriesAll))  
         print('')                               
         print('USE LETTERS:   ', *qAlpha)        
         print('')                               
@@ -226,6 +227,18 @@ def letsgame():
 
             break
         guess = input(input_guess_letter).upper()
+        if guess == 'EXIT':
+            print('\nEXITING...')
+            sleep(2)
+            clear()
+            exit()  
+        if guess == 'RESTART':
+            print('\nRESTARTING...')
+            sleep(2)
+            clear()
+            letsgame()
+            break  
+
         clear()
         if (isalpha(guess) == True):                           
             if (find_letter(guess, lWord) == True):
@@ -264,6 +277,7 @@ letsgame()
 while True:
     user_input = input("Would you like to play again? (y/n)   ")
     if user_input.lower() == "n":
+        print('\nEXITING...')
         sleep(2)
         clear()
         exit()
