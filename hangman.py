@@ -204,7 +204,7 @@ def letsgame():
     clear()
     while gameWin == False:
         # open the secret word
-        print(*lWord)
+        # print(*lWord)
       
         multicolor_printer(hagman_hello, rainbow_colors)
         if (gameTries == 0):
