@@ -51,15 +51,25 @@ def player1scorel (a):
 player1score(0)
 player1scorel(0)
 
+# hints system
+globalhintplayer1=3
+
+def hintplayer1(a):
+    global globalhintplayer1
+    globalhintplayer1=globalhintplayer1-a
+    return globalhintplayer1
+
+chtcode='UCODEWORLD'  
+  
 # graphics and texts
 hagman_pic_0=CGREEN + f'''
 -----------------------------
 |                           |
 |       ------------|       |   EXIT:           input "exit"
 |         |         |       |   RESTART:        input "restart"
-|         |         |       |
-|                   |       |   TOTAL WORDS:    {totalwords}
+|         |         |       |   HINT:           input "hint"
 |                   |       |
+|                   |       |   TOTAL WORDS:    {totalwords}
 |         O         |       |
 |        /|\        |       |
 |        / \        |       |   (c) steleshev, 2022
@@ -70,9 +80,9 @@ hagman_pic_1=CYELLOW + f'''
 |                           |
 |       ------------|       |   EXIT:           input "exit"
 |         |         |       |   RESTART:        input "restart"
-|         |         |       |
-|         O         |       |   TOTAL WORDS:    {totalwords}
-|                   |       |
+|         |         |       |   HINT:           input "hint"
+|         O         |       |
+|                   |       |   TOTAL WORDS:    {totalwords}
 |                   |       |
 |                   |       |
 |                   |       |   (c) steleshev, 2022
@@ -83,9 +93,9 @@ hagman_pic_2=CYELLOW + f'''
 |                           |
 |       ------------|       |   EXIT:           input "exit"
 |         |         |       |   RESTART:        input "restart"
-|         |         |       |
-|         O         |       |   TOTAL WORDS:    {totalwords}
-|         |         |       |
+|         |         |       |   HINT:           input "hint"
+|         O         |       |
+|         |         |       |   TOTAL WORDS:    {totalwords}
 |                   |       |
 |                   |       |
 |                   |       |   (c) steleshev, 2022
@@ -96,9 +106,9 @@ hagman_pic_3=CYELLOW + f'''
 |                           |
 |       ------------|       |   EXIT:           input "exit"
 |         |         |       |   RESTART:        input "restart"
-|         |         |       |
-|         O         |       |   TOTAL WORDS:    {totalwords}
-|        /|         |       |
+|         |         |       |   HINT:           input "hint"
+|         O         |       |
+|        /|         |       |   TOTAL WORDS:    {totalwords}
 |                   |       |
 |                   |       |
 |                   |       |   (c) steleshev, 2022
@@ -109,9 +119,9 @@ hagman_pic_4=CYELLOW + f'''
 |                           |
 |       ------------|       |   EXIT:           input "exit"
 |         |         |       |   RESTART:        input "restart"
-|         |         |       |
-|         O         |       |   TOTAL WORDS:    {totalwords}
-|        /|\        |       |
+|         |         |       |   HINT:           input "hint"
+|         O         |       |
+|        /|\        |       |   TOTAL WORDS:    {totalwords}
 |                   |       |
 |                   |       |
 |                   |       |   (c) steleshev, 2022
@@ -122,9 +132,9 @@ hagman_pic_5=CYELLOW + f'''
 |                           |
 |       ------------|       |   EXIT:           input "exit"
 |         |         |       |   RESTART:        input "restart"
-|         |         |       |
-|         O         |       |   TOTAL WORDS:    {totalwords}
-|        /|\        |       |
+|         |         |       |   HINT:           input "hint"
+|         O         |       |
+|        /|\        |       |   TOTAL WORDS:    {totalwords}
 |        /          |       |
 |                   |       |
 |                   |       |   (c) steleshev, 2022
@@ -146,6 +156,7 @@ hagman_pic_6=CRED + f'''
 hangman_yourlose=CREDBG + '          YOU LOSE!          ' + RESSTYLE
 hangman_yourwin=CGREENBG + '          YOU WON!!!         ' + RESSTYLE
 hangman_tries=CREDBG2 + '           TRIES LEFT:' + RESSTYLE + ' '
+hangman_hints='                              ' + CYELLOWBG + 'HINTS:' + RESSTYLE + ' '
 hangman_score=' ' + CGREENBG + 'SCORE:' + RESSTYLE + ' '
 input_guess_letter=CBLUE + 'GUESS LETTER: ' + RESSTYLE
 input_already_letter=CRED + 'YOU HAVE ALREADY USED THIS LETTER!' + RESSTYLE
@@ -201,11 +212,15 @@ def letsgame():
     def find_letter(letter, word):
         return any(letter in word for word in word)
 
-    clear()
-    while gameWin == False:
-        # open the secret word
-        # print(*lWord)
+    # hints
+    def hintletter():
+        for i in range(len(lWord)):
+          if qList[i] == '_':
+            return lWord[i] 
+            break
       
+    clear()
+    while gameWin == False:     
         multicolor_printer(hagman_hello, rainbow_colors)
         if (gameTries == 0):
             print(hagman_pic_6)
@@ -222,6 +237,7 @@ def letsgame():
         if (gameTries == 1):
             print(hagman_pic_5)  
         print(hangman_tries + str(gameTries) + ' of ' + str(gameTriesAll) + hangman_score + str(globalplayer1score) + ' wins and ' + str(globalplayer1scorel) + ' loses')
+        print(hangman_hints + str(globalhintplayer1) + ' of 3')
         print('')                               
         print('USE LETTERS:   ', *qAlpha)        
         print('')                               
@@ -248,6 +264,7 @@ def letsgame():
             if (gameTries == 1):
                 print(hagman_pic_5)
             print(hangman_tries + str(gameTries) + ' of ' + str(gameTriesAll) + hangman_score + str(globalplayer1score) + ' wins and ' + str(globalplayer1scorel) + ' loses')
+            print(hangman_hints + str(globalhintplayer1) + ' of 3')
             print('')
             print('THE WORD WAS REALLY: ' + secretWord)
             print('')
@@ -255,6 +272,12 @@ def letsgame():
             
             break
         guess = input(input_guess_letter).upper()
+      
+        # open the secret word by cheatcode
+        if guess == chtcode:
+            print(*lWord)
+            sleep(3)
+        # exit, restart commands
         if guess == 'EXIT':
             print('\nEXITING...')
             sleep(2)
@@ -266,7 +289,11 @@ def letsgame():
             clear()
             letsgame()
             break  
-
+        # hints  
+        if guess == 'HINT' and globalhintplayer1:
+            hintplayer1(1)
+            guess = hintletter()
+          
         clear()
         if (isalpha(guess) == True):                           
             if (find_letter(guess, lWord) == True):
@@ -288,6 +315,7 @@ def letsgame():
                     multicolor_printer(hagman_hello, rainbow_colors)
                     print(hagman_pic_6)
                     print(hangman_tries + str(gameTries) + ' of ' + str(gameTriesAll) + hangman_score + str(globalplayer1score) + ' wins and ' + str(globalplayer1scorel) + ' loses')
+                    print(hangman_hints + str(globalhintplayer1) + ' of 3')
                     print('')
                     print('THE WORD WAS: ' + secretWord)
                     print('')
