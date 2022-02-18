@@ -1,4 +1,4 @@
 # hangman
 HANGMAN Game || 
 My first Python3 game! || 
-version 3.051
+version 3.07
